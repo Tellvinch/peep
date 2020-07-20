@@ -78,7 +78,12 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'peep.wsgi.application'
-
+# emails
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -89,6 +94,10 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
